@@ -5,6 +5,7 @@
             "ESNext",
             "DOM"
         ],
+        "moduleResolution": "nodenext",
         "module": "ESNext",
         "target": "es2018",
         "noImplicitAny": true,

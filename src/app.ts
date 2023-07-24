@@ -1,3 +1,4 @@
+import { html } from 'lit';
 interface DOMElements {
 	[index: string]: HTMLElement | HTMLInputElement;
 }
@@ -18,6 +19,8 @@ class NotrApp {
 
     setupUI(): void {
         this.$.helloName.textContent = 'Adrian';
+
+        html`<div>Hello world</div>`
     }
 }
 
