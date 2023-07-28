@@ -11,10 +11,26 @@
 
 <body>
     <header>
-        <h1>Hello <span data-notr="hello-name">Unnamed</span></h1>
+        <h1>Notr</h1>
     </header>
 
     <main>
+      <form data-notr="note-form">
+        <div class="form-field">
+          <label for="note_title">Title</label>
+          <input type="text" class="form-input" name="note_title" id="note_title" data-notr="note-form-title">
+        </div>
+
+        <div class="form-field">
+          <label for="note_content">Content</label>
+          <textarea name="note_content" id="note_content" cols="30" rows="10" data-notr="note-form-content"></textarea>
+        </div>
+
+        <div class="form-field">
+          <button type="submit" class="button">Add</button>
+        </div>
+      </form>
+
       <ul data-notr="list"></ul>
     </main>
 
