@@ -5,8 +5,8 @@
     <title>Notr</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/index.css" />
-    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="./src/style.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
 <body>
@@ -14,15 +14,11 @@
         <h1>Hello <span data-notr="hello-name">Unnamed</span></h1>
     </header>
 
-    <!-- Scripts here. Don't remove ↓ -->
-    <script type="importmap">
-        {
-          "imports": {
-            "lit": "./vendor/lit-core.min.js"
-          }
-        }
-    </script>
-    <script type="module" src="build/app.js"></script>
+    <main>
+      <ul data-notr="list"></ul>
+    </main>
+
+    <script type="module" src="/src/app.ts"></script>
 </body>
 
 </html>

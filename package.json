@@ -1,21 +1,21 @@
 {
-	"type": "module",
-	"private": true,
-	"scripts": {
-		"start": "python3 -m http.server 1337",
-		"dev": "npx tsc-watch --noClear -p ./tsconfig.json --onSuccess \"npm start\"",
-		"format": "npx prettier --config .prettierrc 'src/*.ts' --write",
-		"build": "npx tsc",
-		"lint": "npx eslint src/*.ts"
-	},
-	"dependencies": {},
-	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^6.1.0",
-		"@typescript-eslint/parser": "^6.1.0",
-		"eslint": "^8.45.0",
-		"prettier": "^3.0.0",
-		"tsc-watch": "^6.0.4",
-		"typescript": "^5.1.6",
-		"lit": "^2.7.6"
-	}
+  "name": "notr",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lit": "^2.7.6"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vite-plugin-eslint": "^1.8.1"
+  }
 }
