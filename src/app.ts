@@ -36,11 +36,11 @@ class NotrApp {
             } as Note)
         });
 
-        this.bindEvents();
+        this.bindNoteEvents();
         this.render();
     }
 
-    notrEvent(event: keyof GlobalEventHandlersEventMap, selector: string, handler: (n: Note, el: HTMLElement, e: Event) => void): void {
+    noteEvent(event: keyof GlobalEventHandlersEventMap, selector: string, handler: (n: Note, el: HTMLElement, e: Event) => void): void {
         delegate(this.$.list as HTMLElement, selector, event, (e: Event) => {
             const $el = (e.target as HTMLElement).closest("[data-id]") as HTMLElement;
 
@@ -53,8 +53,8 @@ class NotrApp {
         });
     }
 
-    bindEvents() {
-        this.notrEvent("click", '[data-notr="destroy"]', (note: Note) => {
+    bindNoteEvents() {
+        this.noteEvent("click", '[data-notr="destroy"]', (note: Note) => {
             Notes.remove(note);
         });
     }
