@@ -8,6 +8,7 @@ export interface Note {
 export class NotrStore extends EventTarget {
     private localStorageKey: string;
     private notes: Array<Note> = [];
+    private editedNoteId: string = "none";
 
     constructor(localStorageKey: string) {
         super();
@@ -28,6 +29,7 @@ export class NotrStore extends EventTarget {
 
     all = (): Array<Note> => this.notes;
     get = (id: string) => this.notes.find((note) => note.id === id);
+    getEditedNoteId = (): string => this.editedNoteId;
 
     add(note: Note) {
 		this.notes.push({
@@ -36,30 +38,28 @@ export class NotrStore extends EventTarget {
             content: note.content,
             created: new Date()
 		});
-
-		this.saveStorage();
 	}
 
     remove({ id }: Note) {
 		this.notes = this.notes.filter((note) => note.id !== id);
-		this.saveStorage();
 	}
 
     update(note: Note) {
 		this.notes = this.notes.map((n) => (n.id === note.id ? note : n));
-		this.saveStorage();
 	}
 
-    revert() {
-        this.saveStorage();
+    setEditedNoteId(id: string) {
+        this.editedNoteId = id;
     }
 
     private readStorage() {
-        this.notes = JSON.parse(window.localStorage.getItem(this.localStorageKey) || "[]");
+        this.notes = JSON.parse(window.localStorage.getItem(this.localStorageKey+'_notes') || "[]");
+        this.editedNoteId = window.localStorage.getItem(this.localStorageKey+'_editedNoteId') || "none";
     }
 
-    private saveStorage() {
-		window.localStorage.setItem(this.localStorageKey, JSON.stringify(this.notes));
+    saveStorage() {
+		window.localStorage.setItem(this.localStorageKey+'_notes', JSON.stringify(this.notes));
+		window.localStorage.setItem(this.localStorageKey+'_editedNoteId', this.editedNoteId);
 		this.dispatchEvent(new CustomEvent("save"));
 	}
 }
