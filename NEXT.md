@@ -2,10 +2,10 @@
 
 List of stuff I want to implement next, before I forget it.
 
-- [ ] more seamless add (add on escape/blur) with expand/contract behavior of the add form
 - [ ] toolbar with trash icon that appears only on focus
-- [ ] more seamless editing either by a dedicated contenteditable logic or an embedded editor - quil?
-- [ ] support for linebreaks in rendered content
+- [x] more seamless editing either by a dedicated contenteditable logic or an embedded editor - using https://prosemirror.net/docs/guide/
+- [ ] more seamless add (add on escape/blur) with expand/contract behavior of the add form
+- [x] support for linebreaks in rendered content
 - [ ] support for links
 - [ ] support for embed rendering of links
 - [ ] checklists (faar)

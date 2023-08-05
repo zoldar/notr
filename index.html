@@ -17,36 +17,20 @@
   <main>
     <section id="notes">
       <form data-notr="note-add-form">
-        <div class="form-field">
-          <label for="new_note_title">Title</label>
-          <input type="text" class="form-input" name="new_note_title" id="new_note_title"
-            data-notr="note-add-form-title">
-        </div>
+        <div id="new_note_title" data-notr="note-add-form-title"></div>
 
-        <div class="form-field">
-          <label for="new_note_content">Content</label>
-          <textarea name="new_note_content" id="new_note_content" cols="30" rows="10"
-            data-notr="note-add-form-content"></textarea>
-        </div>
+        <div id="new_note_content" data-notr="note-add-form-content"></div>
 
         <div class="form-field">
           <button type="submit" class="button">Add</button>
         </div>
       </form>
 
-      <dialog data-notr="note-edit-dialog">
+      <dialog id="edit-dialog" data-notr="note-edit-dialog">
         <form id="note-edit-form" data-notr="note-edit-form">
-          <div class="form-field">
-            <label for="existing_note_title">Title</label>
-            <input type="text" class="form-input" name="existint_note_title" id="existing_note_title"
-              data-notr="note-edit-form-title">
-          </div>
+          <div id="existing_note_title" data-notr="note-edit-form-title"></div>
 
-          <div class="form-field">
-            <label for="existing_note_content">Content</label>
-            <textarea name="existing_note_content" id="existing_note_content" cols="30" rows="10"
-              data-notr="note-edit-form-content"></textarea>
-          </div>
+          <div id="existing_note_content" data-notr="note-edit-form-content"></div>
         </form>
       </dialog>
 

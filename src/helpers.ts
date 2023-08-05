@@ -7,7 +7,7 @@ export const delegate = (
     handler: (e: Event, el: HTMLElement) => void
 ) => {
     el.addEventListener(event, (e) => {
-        if ((e.target as HTMLElement).matches(selector)) handler(e, el);
+        if ((e.target as HTMLElement).closest(selector)) handler(e, el);
     });
 };
 
