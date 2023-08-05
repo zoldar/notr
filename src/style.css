@@ -62,6 +62,11 @@ select {
 /* Edit dialog */
 #edit-dialog {
   width: 80%;
+  padding: 0;
+}
+
+#edit-dialog > .container {
+  padding: 0.5em 0.8em;
 }
 
 /* ProseMirror specific styles */

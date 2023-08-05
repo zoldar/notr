@@ -43,14 +43,14 @@ class NotrApp {
         Notes.addEventListener("save", this.render.bind(this) as EventListener);
 
         this.$.addForm.addEventListener("submit", (event) => {
-            Notes.add({
-                title: this.newTitleEditor.getDoc(),
-                content: this.newContentEditor.getDoc()
-            } as Note);
-            Notes.saveStorage();
-            this.newTitleEditor.reset();
-            this.newContentEditor.reset();
+            this.addNote();
             event.preventDefault();
+        });
+
+        (this.$.addForm as HTMLElement).addEventListener("keyup", (event) => {
+            if (event.key === "Escape") {
+                this.addNote();
+            }
         });
 
         this.$.editDialog.addEventListener("click", (event) => {
@@ -64,8 +64,25 @@ class NotrApp {
             this.saveNote();
         });
 
+        document.body.addEventListener("keyup", (event) => {
+            if (event.key === "Escape" && Notes.getEditedNoteId()) {
+                (this.$.editDialog as HTMLDialogElement).close();
+                this.saveNote();
+            }
+        })
+
         this.bindNoteEvents();
         this.render();
+    }
+
+    addNote() {
+        Notes.add({
+            title: this.newTitleEditor.getDoc(),
+            content: this.newContentEditor.getDoc()
+        } as Note);
+        Notes.saveStorage();
+        this.newTitleEditor.reset();
+        this.newContentEditor.reset();
     }
 
     saveNote() {
@@ -117,15 +134,15 @@ class NotrApp {
     createNoteItem(note: Note) {
         return html`
             <article data-notr="note" data-id="${note.id}">
-				<div class="view new">
-					<h3 data-notr="note-label">${renderDoc(note.title)}</h3>
+                <div class="view new">
+                    <h3 data-notr="note-label">${renderDoc(note.title)}</h3>
                     
                     <div data-notr="note-content" class="content">${renderDoc(note.content)}</div>
 
                     <footer class="buttons">
                         <button class="destroy" data-notr="note-destroy">X</button>
                     </footer>
-				</div>
+                </div>
             </article>
         `;
     }
