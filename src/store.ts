@@ -32,7 +32,7 @@ export class NotrStore extends EventTarget {
     getEditedNoteId = (): string => this.editedNoteId;
 
     add(note: Note) {
-        this.notes.push({
+        this.notes.unshift({
             id: "id_" + Date.now(),
             title: note.title,
             content: note.content,
