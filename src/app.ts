@@ -3,6 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { NotrStore, Note } from './store.ts';
 import { delegate } from './helpers.ts';
 import { ContentEditor, SimpleEditor, renderDoc } from './editor.ts';
+import { setupMasonry } from './masonry.ts';
 
 const Notes = new NotrStore("notr-app");
 
@@ -16,6 +17,7 @@ class NotrApp {
     editTitleEditor: SimpleEditor;
     editContentEditor: ContentEditor;
     parent: HTMLElement;
+    reflowNotes: () => void;
     $: DOMElements;
 
     constructor(el: HTMLElement) {
@@ -35,7 +37,7 @@ class NotrApp {
         this.newContentEditor = new ContentEditor(this.$.addFormTitle, "Content");
         this.editTitleEditor = new SimpleEditor(this.$.editFormTitle, "Title");
         this.editContentEditor = new ContentEditor(this.$.editFormContent, "Content");
-
+        this.reflowNotes = setupMasonry(this.$.list, "note");
         this.setupUI();
     }
 
@@ -125,22 +127,30 @@ class NotrApp {
         });
 
         this.noteEvent("click", '[data-notr="note"]', (note: Note) => {
-            Notes.setEditedNoteId(note.id);
-            Notes.saveStorage();
+            if (document.getSelection()?.type !== "Range") {
+                Notes.setEditedNoteId(note.id);
+                Notes.saveStorage();
+            }
         });
 
     }
 
     createNoteItem(note: Note) {
         return html`
-            <article data-notr="note" data-id="${note.id}">
-                <div class="view new">
+            <article class="note" data-notr="note" data-id="${note.id}">
+                <div class="container">
                     <h3 data-notr="note-label">${renderDoc(note.title)}</h3>
                     
                     <div data-notr="note-content" class="content">${renderDoc(note.content)}</div>
 
                     <footer class="buttons">
-                        <button class="destroy" data-notr="note-destroy">X</button>
+                        <ul class="container">
+                            <li>
+                                <button class="destroy" data-notr="note-destroy">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"> <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/> <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg> 
+                                </button>
+                            </li>
+                        </ul>
                     </footer>
                 </div>
             </article>
@@ -172,6 +182,8 @@ class NotrApp {
             ),
             this.$.list
         );
+
+        this.reflowNotes();
     }
 }
 
