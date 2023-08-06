@@ -4,11 +4,11 @@ List of stuff I want to implement next, before I forget it.
 
 - [X] toolbar with trash icon that appears only on focus
 - [x] more seamless editing either by a dedicated contenteditable logic or an embedded editor - using https://prosemirror.net/docs/guide/
-- [ ] add expand/contract behavior of the add form
+- [x] add expand/contract behavior of the add form
 - [x] support for linebreaks in rendered content
 - [x] notes in masonry layout
-- [ ] support for links
 - [ ] color-coding of notes
+- [ ] support for links
 - [ ] checklists
 - [ ] notes text search
 - [ ] better styling

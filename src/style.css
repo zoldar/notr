@@ -42,6 +42,40 @@ select {
   }
 }
 
+/* General layout */
+
+main section {
+  margin: 0 0.5em;
+}
+
+/* New note form */
+
+#note-add-form {
+  border-radius: 8px;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
+  background-color: #fff;
+  padding: 0.3em 0.5em;
+  width: 60%;
+  margin: 2em auto;
+}
+
+#new_note_title {
+  display: none;
+}
+
+#note-add-form .buttons {
+  display: none;
+}
+
+#note-add-form .buttons > .container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  list-style-type: none; 
+  padding: 0;
+}
+
 /* Notes list */
 
 #notes-list {
@@ -96,6 +130,7 @@ select {
 }
 
 /* Edit dialog */
+
 #edit-dialog {
   width: 80%;
   padding: 0;
@@ -115,6 +150,7 @@ select {
 }
 
 .ProseMirror {
+  outline: 0;
   position: relative;
 }
 

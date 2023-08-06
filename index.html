@@ -10,20 +10,20 @@
 </head>
 
 <body>
-  <header>
-    <h1>Notr</h1>
-  </header>
-
   <main>
     <section id="notes">
-      <form data-notr="note-add-form">
+      <form id="note-add-form" data-notr="note-add-form">
         <div id="new_note_title" data-notr="note-add-form-title"></div>
 
         <div id="new_note_content" data-notr="note-add-form-content"></div>
 
-        <div class="form-field">
-          <button type="submit" class="button">Add</button>
-        </div>
+        <footer class="buttons" data-notr="note-add-form-buttons">
+            <ul class="container">
+              <li>
+                <button type="submit" class="button">Close</button>
+              </li>
+            </ul>
+        </footer>
       </form>
 
       <dialog id="edit-dialog" data-notr="note-edit-dialog">

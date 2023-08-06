@@ -13,9 +13,9 @@ class BaseEditor {
     newStateFn: () => EditorState;
     view: EditorView;
 
-    constructor(element: HTMLElement, placeholderLabel: string) {
+    constructor(element: HTMLElement, placeholderLabel: string, viewAttrs?: object) {
         this.newStateFn = () => this.initState({}, placeholderLabel);
-        this.view = this.initView(element, this.newStateFn(), {})
+        this.view = this.initView(element, this.newStateFn(), viewAttrs || {})
     }
 
     initState(attrs: object, placeholderLabel: string) {
@@ -46,10 +46,19 @@ class BaseEditor {
         return view;
     }
 
+    isEmpty() {
+        return this.view.state.doc.textContent.trim() === "";
+    }
+
     getDoc = (): object => this.view.state.doc.toJSON();
 
     reset() {
         this.view.updateState(this.newStateFn());
+    }
+
+    blur() {
+        (this.view.dom as HTMLElement).blur();
+        window.getSelection()?.removeAllRanges();
     }
 
     set(doc: object) {

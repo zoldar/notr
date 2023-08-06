@@ -27,6 +27,7 @@ class NotrApp {
             addForm: el.querySelector('[data-notr="note-add-form"]') as HTMLElement,
             addFormTitle: el.querySelector('[data-notr="note-add-form-title"]') as HTMLElement,
             addFormContent: el.querySelector('[data-notr="note-add-form-content"]') as HTMLElement,
+            addFormButtons: el.querySelector('[data-notr="note-add-form-buttons"]') as HTMLElement,
             editDialog: el.querySelector('[data-notr="note-edit-dialog"]') as HTMLDialogElement,
             editFormTitle: el.querySelector('[data-notr="note-edit-form-title"]') as HTMLElement,
             editFormContent: el.querySelector('[data-notr="note-edit-form-content"]') as HTMLElement,
@@ -34,9 +35,17 @@ class NotrApp {
         }
 
         this.newTitleEditor = new SimpleEditor(this.$.addFormTitle, "Title");
-        this.newContentEditor = new ContentEditor(this.$.addFormTitle, "Content");
+        this.newContentEditor = new ContentEditor(this.$.addFormContent, "Write a note...", {
+            handleDOMEvents: {
+                focus: () => {
+                    console.log('hit')
+                    this.expandAddForm();
+                    return true;
+                }
+            }
+        });
         this.editTitleEditor = new SimpleEditor(this.$.editFormTitle, "Title");
-        this.editContentEditor = new ContentEditor(this.$.editFormContent, "Content");
+        this.editContentEditor = new ContentEditor(this.$.editFormContent, "Write a note...");
         this.reflowNotes = setupMasonry(this.$.list, "note");
         this.setupUI();
     }
@@ -77,14 +86,28 @@ class NotrApp {
         this.render();
     }
 
+    expandAddForm() {
+        this.$.addFormTitle.style.display = 'block';
+        this.$.addFormButtons.style.display = 'block';
+    }
+
+    contractAddForm() {
+        this.$.addFormTitle.style.display = 'none';
+        this.$.addFormButtons.style.display = 'none';
+    }
+
     addNote() {
-        Notes.add({
-            title: this.newTitleEditor.getDoc(),
-            content: this.newContentEditor.getDoc()
-        } as Note);
-        Notes.saveStorage();
+        if (!this.newTitleEditor.isEmpty() || !this.newContentEditor.isEmpty()) {
+            Notes.add({
+                title: this.newTitleEditor.getDoc(),
+                content: this.newContentEditor.getDoc()
+            } as Note);
+            Notes.saveStorage();
+        }
         this.newTitleEditor.reset();
         this.newContentEditor.reset();
+        this.newContentEditor.blur();
+        this.contractAddForm();
     }
 
     saveNote() {
