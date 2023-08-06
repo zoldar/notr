@@ -29,8 +29,10 @@ class NotrApp {
             addFormContent: el.querySelector('[data-notr="note-add-form-content"]') as HTMLElement,
             addFormButtons: el.querySelector('[data-notr="note-add-form-buttons"]') as HTMLElement,
             editDialog: el.querySelector('[data-notr="note-edit-dialog"]') as HTMLDialogElement,
+            editForm: el.querySelector('[data-notr="note-edit-form"]') as HTMLDialogElement,
             editFormTitle: el.querySelector('[data-notr="note-edit-form-title"]') as HTMLElement,
             editFormContent: el.querySelector('[data-notr="note-edit-form-content"]') as HTMLElement,
+            editFormDestroy: el.querySelector('[data-notr="note-edit-form-destroy"]') as HTMLElement,
             list: el.querySelector('[data-notr="list"]') as HTMLElement,
         }
 
@@ -58,6 +60,12 @@ class NotrApp {
             event.preventDefault();
         });
 
+        this.$.editForm.addEventListener("submit", (event) => {
+            (this.$.editDialog as HTMLDialogElement).close();
+            this.saveNote();
+            event.preventDefault();
+        });
+
         (this.$.addForm as HTMLElement).addEventListener("keyup", (event) => {
             if (event.key === "Escape") {
                 this.addNote();
@@ -75,12 +83,21 @@ class NotrApp {
             this.saveNote();
         });
 
+        this.$.editFormDestroy.addEventListener("click", () => {
+            const note = Notes.get(Notes.getEditedNoteId());
+            if (note) {
+                Notes.remove(note);
+            }
+                (this.$.editDialog as HTMLDialogElement).close();
+                Notes.saveStorage();
+        });
+
         document.body.addEventListener("keyup", (event) => {
             if (event.key === "Escape" && Notes.getEditedNoteId()) {
                 (this.$.editDialog as HTMLDialogElement).close();
                 this.saveNote();
             }
-        })
+        });
 
         this.bindNoteEvents();
         this.render();

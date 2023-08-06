@@ -8,8 +8,8 @@ List of stuff I want to implement next, before I forget it.
 - [x] support for linebreaks in rendered content
 - [x] notes in masonry layout
 - [ ] color-coding of notes
-- [ ] support for links
 - [ ] checklists
+- [ ] support for links
 - [ ] notes text search
 - [ ] better styling
 - [ ] dragging notes
