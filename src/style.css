@@ -79,6 +79,7 @@ main section {
 
 #note-add-form .buttons .container button {
   background-color: transparent;
+  color: blue;
   border: 0px solid;
   outline: 0;
   vertical-align: -50%;
@@ -164,6 +165,7 @@ main section {
 
 #note-edit-form .buttons .container button {
   background-color: transparent;
+  color: blue;
   border: 0px solid;
   outline: 0;
   vertical-align: -50%;
