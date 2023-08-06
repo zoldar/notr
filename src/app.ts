@@ -66,12 +66,6 @@ class NotrApp {
             event.preventDefault();
         });
 
-        (this.$.addForm as HTMLElement).addEventListener("keyup", (event) => {
-            if (event.key === "Escape") {
-                this.addNote();
-            }
-        });
-
         this.$.editDialog.addEventListener("click", (event) => {
             if (event.target === this.$.editDialog) {
                 (this.$.editDialog as HTMLDialogElement).close();
@@ -93,9 +87,13 @@ class NotrApp {
         });
 
         document.body.addEventListener("keyup", (event) => {
-            if (event.key === "Escape" && Notes.getEditedNoteId()) {
-                (this.$.editDialog as HTMLDialogElement).close();
-                this.saveNote();
+            if (event.key === "Escape") {
+                if (Notes.getEditedNoteId() !== "none") {
+                    (this.$.editDialog as HTMLDialogElement).close();
+                    this.saveNote();
+                } else {
+                    this.addNote();
+                }
             }
         });
 
