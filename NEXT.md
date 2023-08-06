@@ -15,7 +15,7 @@ List of stuff I want to implement next, before I forget it.
 - [ ] dragging notes
 - [ ] image embeds, maybe
 - [ ] PWA-readiness
-- [ ] Tauri based native client
+- [x] Tauri based native client
 - [ ] support for embed rendering of links
 - [ ] reminders with calendar integration / own notifications (faaaaar)
 - [ ] cross client storage sync (requires some backend work, likely, faaar faaar away, but only at that point I might be able to migrate)
