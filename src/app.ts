@@ -88,8 +88,8 @@ class NotrApp {
             if (note) {
                 Notes.remove(note);
             }
-                (this.$.editDialog as HTMLDialogElement).close();
-                Notes.saveStorage();
+            (this.$.editDialog as HTMLDialogElement).close();
+            Notes.saveStorage();
         });
 
         document.body.addEventListener("keyup", (event) => {
