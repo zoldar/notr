@@ -24,7 +24,7 @@ class BaseEditor {
                 schema,
                 plugins: [
                     history(),
-                    keymap({ "Mod-z": undo, "Mod-y": redo }),
+                    keymap({ "Mod-z": undo, "Mod-y": redo, "Mod-Enter": () => this.submitForm() }),
                     placeholder(placeholderLabel)
                 ]
             }, ...attrs
@@ -44,6 +44,11 @@ class BaseEditor {
         });
 
         return view;
+    }
+
+    submitForm() {
+        this.view.dom.closest("form")?.dispatchEvent(new SubmitEvent("submit"));
+        return true;
     }
 
     isEmpty() {
@@ -81,6 +86,7 @@ export class ContentEditor extends BaseEditor {
                     keymap({
                         "Mod-z": undo,
                         "Mod-y": redo,
+                        "Mod-Enter": () => this.submitForm(),
                         "Enter": chainCommands(exitCode, (state, dispatch) => {
                             const br = schema.nodes.hard_break;
                             if (dispatch) dispatch(state.tr.replaceSelectionWith(br.create()).scrollIntoView());
