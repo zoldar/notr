@@ -48,6 +48,20 @@ main section {
   margin: 0 0.5em;
 }
 
+/* Task list */
+
+span.checkbox {
+  display: inline-block;
+}
+
+span.unchecked::before {
+  content: "- [X] "
+}
+
+span.checked::before {
+  content: "- [V] "
+}
+
 /* New note form */
 
 #note-add-form {
@@ -172,6 +186,11 @@ main section {
 }
 
 /* ProseMirror specific styles */
+
+.note ul, .ProseMirror ul {
+  list-style-type: none;
+  padding: 0;
+}
 
 .ProseMirror[data-placeholder]::before {
   color: #d1d1d1;
