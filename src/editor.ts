@@ -132,12 +132,29 @@ export class TaskEditor extends BaseEditor {
                     // console.log(newState.doc.toJSON());
                     view.updateState(newState);
                 },
-                handleClickOn(_view, _pos, node, nodePos) {
-                    const checkbox = taskSchema.nodes.checkbox
+                handleClickOn(view, _pos, node, nodePos) {
+                    const checkbox = taskSchema.nodes.checkbox;
                     if (node.type === checkbox) {
-                        console.log('hit');
-                         const tr = view.state.tr.replaceWith(nodePos, nodePos + 1, checkbox.create({checked: !node.attrs.checked}))
-                         view.dispatch(tr);
+                        const tr = view.state.tr.replaceWith(nodePos, nodePos + 1, checkbox.create({ checked: !node.attrs.checked }))
+                        view.dispatch(tr);
+                    }
+                    return true;
+                },
+                handleDoubleClickOn(view, _pos, node, nodePos, event) {
+                    const checkbox = taskSchema.nodes.checkbox;
+                    if (node.type === checkbox) {
+                        const tr = view.state.tr.replaceWith(nodePos, nodePos + 1, checkbox.create({ checked: !node.attrs.checked }))
+                        view.dispatch(tr);
+                        event.preventDefault();
+                    }
+                    return true;
+                },
+                handleTripleClickOn(view, _pos, node, nodePos, event) {
+                    const checkbox = taskSchema.nodes.checkbox;
+                    if (node.type === checkbox) {
+                        const tr = view.state.tr.replaceWith(nodePos, nodePos + 1, checkbox.create({ checked: !node.attrs.checked }))
+                        view.dispatch(tr);
+                        event.preventDefault();
                     }
                     return true;
                 }

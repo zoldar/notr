@@ -9,31 +9,36 @@ export const nodes = {
         content: "task+",
         group: "block",
         parseDOM: [{ tag: "ul" }],
-        toDOM() { return ["ul", 0] }
+        toDOM() { return ["ul", {class: "tasklist"}, 0] }
     } as NodeSpec,
 
     task: {
-        content: "checkbox inline*",
+        content: "checkbox paragraph",
         group: "task",
         parseDOM: [{ tag: "li" }],
         toDOM() { return ["li", 0] }
     } as NodeSpec,
 
     checkbox: {
-        attrs: {checked: {default: false}},
+        attrs: { checked: { default: false } },
         selectable: false,
-        inline: true,
         parseDOM: [{
-            tag: "span", getAttrs(node: HTMLElement) {
+            tag: "div", getAttrs(node: HTMLElement) {
                 return { checked: node.classList[1] === 'checked' }
             }
         }],
         toDOM(node) {
-            return ["span", {
+            return ["div", {
                 class: node.attrs.checked ?
                     'taskbox checked' : 'taskbox unchecked'
             }]
         }
+    } as NodeSpec,
+
+    paragraph: {
+        content: "inline*",
+        parseDOM: [{ tag: "p" }],
+        toDOM() { return ["p", 0] }
     } as NodeSpec,
 
     text: {

@@ -50,16 +50,29 @@ main section {
 
 /* Task list */
 
-span.checkbox {
-  display: inline-block;
+div.taskbox {
+  width: 1.3em;
+  height: 1.3em;
+  background-position: left bottom;
+  vertical-align: top;
 }
 
-span.unchecked::before {
-  content: "- [X] "
+div.unchecked {
+  background: url('/icons/square.svg') no-repeat;
 }
 
-span.checked::before {
-  content: "- [V] "
+div.checked {
+  background: url('/icons/square-check.svg') no-repeat;
+}
+
+ul.tasklist {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul.tasklist li {
+  display: flex;
+  flex-direction: row;
 }
 
 /* New note form */
@@ -145,11 +158,11 @@ span.checked::before {
   vertical-align: -50%;
 }
 
-#notes-list .note .buttons .container button > svg {
+#notes-list .note .buttons .container button > img {
   opacity: 0
 }
 
-#notes-list .note:hover .buttons .container button > svg {
+#notes-list .note:hover .buttons .container button > img {
   opacity: 1;
 }
 
@@ -186,11 +199,6 @@ span.checked::before {
 }
 
 /* ProseMirror specific styles */
-
-.note ul, .ProseMirror ul {
-  list-style-type: none;
-  padding: 0;
-}
 
 .ProseMirror[data-placeholder]::before {
   color: #d1d1d1;
