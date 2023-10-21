@@ -4,9 +4,10 @@ import { schema } from "prosemirror-schema-basic"
 import { EditorState } from "prosemirror-state"
 import { EditorView } from "prosemirror-view"
 import placeholder from "./editor/placeholder";
-import { chainCommands, exitCode } from "prosemirror-commands";
+import { baseKeymap } from "prosemirror-commands";
 import { DOMSerializer, Node } from "prosemirror-model";
 import { taskSchema } from "./editor/tasklist_schema";
+import { buildKeymap } from "./editor/keymap";
 
 class BaseEditor {
     newStateFn: () => EditorState;
@@ -82,16 +83,9 @@ export class ContentEditor extends BaseEditor {
             ...attrs, ...{
                 plugins: [
                     history(),
-                    keymap({
-                        "Mod-z": undo,
-                        "Mod-y": redo,
-                        "Mod-Enter": () => this.submitForm(),
-                        "Enter": chainCommands(exitCode, (state, dispatch) => {
-                            const br = schema.nodes.hard_break;
-                            if (dispatch) dispatch(state.tr.replaceSelectionWith(br.create()).scrollIntoView());
-                            return true;
-                        })
-                    }),
+                    keymap({"Mod-Enter": () => this.submitForm()}),
+                    keymap(buildKeymap(schema)),
+                    keymap(baseKeymap),
                     placeholder(placeholderLabel)
                 ]
             }
@@ -106,62 +100,13 @@ export class TaskEditor extends BaseEditor {
                 schema: taskSchema,
                 plugins: [
                     history(),
-                    keymap({
-                        "Mod-z": undo,
-                        "Mod-y": redo,
-                        "Mod-Enter": () => this.submitForm(),
-                        "Enter": chainCommands(exitCode, (state, dispatch) => {
-                            const task = taskSchema.nodes.task;
-                            const checkbox = taskSchema.nodes.checkbox;
-                            if (dispatch) dispatch(state.tr.replaceSelectionWith(task.create(null, checkbox.create())).scrollIntoView());
-                            return true;
-                        })
-                    }),
+                    keymap({"Mod-Enter": () => this.submitForm()}),
+                    keymap(buildKeymap(taskSchema)),
+                    keymap(baseKeymap),
                     placeholder(placeholderLabel)
                 ]
             }, ...attrs
         });
-    }
-
-    initView(element: HTMLElement, state: EditorState, attrs: object) {
-        const view = new EditorView(element, {
-            ...{
-                state: state,
-                dispatchTransaction(transaction) {
-                    const newState = view.state.apply(transaction);
-                    // console.log(newState.doc.toJSON());
-                    view.updateState(newState);
-                },
-                handleClickOn(view, _pos, node, nodePos) {
-                    const checkbox = taskSchema.nodes.checkbox;
-                    if (node.type === checkbox) {
-                        const tr = view.state.tr.replaceWith(nodePos, nodePos + 1, checkbox.create({ checked: !node.attrs.checked }))
-                        view.dispatch(tr);
-                    }
-                    return true;
-                },
-                handleDoubleClickOn(view, _pos, node, nodePos, event) {
-                    const checkbox = taskSchema.nodes.checkbox;
-                    if (node.type === checkbox) {
-                        const tr = view.state.tr.replaceWith(nodePos, nodePos + 1, checkbox.create({ checked: !node.attrs.checked }))
-                        view.dispatch(tr);
-                        event.preventDefault();
-                    }
-                    return true;
-                },
-                handleTripleClickOn(view, _pos, node, nodePos, event) {
-                    const checkbox = taskSchema.nodes.checkbox;
-                    if (node.type === checkbox) {
-                        const tr = view.state.tr.replaceWith(nodePos, nodePos + 1, checkbox.create({ checked: !node.attrs.checked }))
-                        view.dispatch(tr);
-                        event.preventDefault();
-                    }
-                    return true;
-                }
-            }, ...attrs
-        });
-
-        return view;
     }
 }
 
