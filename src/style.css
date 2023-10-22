@@ -50,31 +50,12 @@ main section {
 
 /* Task list */
 
-div.taskbox {
-  width: 1.3em;
-  height: 1.3em;
-  background-size: cover;
-  margin-right: 0.4em;
-}
-
-div.unchecked {
-  background: url('/icons/square.svg') no-repeat;
-}
-
-div.checked {
-  background: url('/icons/square-check.svg') no-repeat;
-}
-
 ul.tasklist {
   list-style-type: none;
   padding: 0;
 }
 
 ul.tasklist li {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  align-items: center;
   margin: 0.3em 0;
 }
 
