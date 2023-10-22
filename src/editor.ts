@@ -5,9 +5,10 @@ import { EditorState } from "prosemirror-state"
 import { EditorView } from "prosemirror-view"
 import placeholder from "./editor/placeholder";
 import { baseKeymap } from "prosemirror-commands";
-import { DOMSerializer, Node } from "prosemirror-model";
+import { DOMSerializer, Node, Slice } from "prosemirror-model";
 import { taskSchema } from "./editor/tasklist_schema";
 import { buildKeymap } from "./editor/keymap";
+import { checkboxPlugin } from "./editor/checkbox";
 
 class BaseEditor {
     newStateFn: () => EditorState;
@@ -66,11 +67,14 @@ class BaseEditor {
         window.getSelection()?.removeAllRanges();
     }
 
-    set(doc: object) {
+    set(docObj: object) {
         this.reset();
-        const newState = this.view.state;
-        newState.doc = newState.schema.nodeFromJSON(doc);
-        this.view.updateState(newState);
+        const state = this.view.state
+        const doc = state.schema.nodeFromJSON(docObj) 
+        const tr = state.tr
+        tr.replace(0, state.doc.content.size, new Slice(doc.content, 0, 0))
+        const newState = state.apply(tr)
+        this.view.updateState(newState)
     }
 }
 
@@ -103,6 +107,7 @@ export class TaskEditor extends BaseEditor {
                     keymap({"Mod-Enter": () => this.submitForm()}),
                     keymap(buildKeymap(taskSchema)),
                     keymap(baseKeymap),
+                    checkboxPlugin(),
                     placeholder(placeholderLabel)
                 ]
             }, ...attrs

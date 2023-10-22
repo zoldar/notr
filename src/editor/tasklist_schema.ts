@@ -13,7 +13,6 @@ export const nodes = {
     } as NodeSpec,
 
     list_item: {
-        attrs: {checked: {default: false}},
         content: "paragraph",
         parseDOM: [{tag: "li"}],
         toDOM() { return ["li", 0] },
@@ -21,6 +20,7 @@ export const nodes = {
     } as NodeSpec,
 
     paragraph: {
+        attrs: {checked: {default: false}},
         content: "inline*",
         parseDOM: [{ tag: "p" }],
         toDOM() { return ["p", 0] }

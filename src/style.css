@@ -56,6 +56,10 @@ ul.tasklist {
 }
 
 ul.tasklist li {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: top;
   margin: 0.3em 0;
 }
 
@@ -98,6 +102,10 @@ ul.tasklist p {
   border: 0px solid;
   outline: 0;
   vertical-align: -50%;
+}
+
+#note-add-form .ProseMirror[data-placeholder]:focus::before {
+  content: '';
 }
 
 /* Notes list */
