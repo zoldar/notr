@@ -1,5 +1,4 @@
 import { NodeSpec, Schema } from "prosemirror-model";
-import { listItem } from "prosemirror-schema-list";
 
 export const nodes = {
     doc: {
@@ -14,9 +13,11 @@ export const nodes = {
     } as NodeSpec,
 
     list_item: {
+        attrs: {checked: {default: false}},
         content: "paragraph",
-        ...
-        listItem
+        parseDOM: [{tag: "li"}],
+        toDOM() { return ["li", 0] },
+        defining: true
     } as NodeSpec,
 
     paragraph: {
