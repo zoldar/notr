@@ -103,11 +103,13 @@ class NotrApp {
     expandAddForm() {
         this.$.addFormTitle.style.display = 'block';
         this.$.addFormButtons.style.display = 'block';
+        this.newContentEditor.view.dom.classList.add('expanded');
     }
 
     contractAddForm() {
         this.$.addFormTitle.style.display = 'none';
         this.$.addFormButtons.style.display = 'none';
+        this.newContentEditor.view.dom.classList.remove('expanded');
     }
 
     addNote() {

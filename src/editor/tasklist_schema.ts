@@ -23,7 +23,12 @@ export const nodes = {
         attrs: {checked: {default: false}},
         content: "inline*",
         parseDOM: [{ tag: "p" }],
-        toDOM() { return ["p", 0] }
+        toDOM(node) {
+            if (node.attrs.checked) {
+                return ["p", {class: "checked"}, 0]
+            }
+            return ["p", 0]
+        }
     } as NodeSpec,
 
     text: {

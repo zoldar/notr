@@ -6,7 +6,7 @@ function wrapItems(doc) {
 
     doc.descendants((node, pos) => {
         if (node.type.name === "paragraph") {
-            items.push({from: pos, checked: node.attrs.checked})
+            items.push({ from: pos, checked: node.attrs.checked })
         }
     })
 
@@ -20,7 +20,8 @@ function checkbox(checklistItem: object) {
     const box = wrap.appendChild(document.createElement("input"))
     box.type = "checkbox"
     box.checked = checklistItem.checked
-    wrap.position = checklistItem.from
+    box.className = "checklist-checkbox"
+    box.position = checklistItem.from
     return wrap
 }
 
@@ -34,14 +35,34 @@ function checkboxDeco(doc) {
     return DecorationSet.create(doc, decos)
 }
 
-export function checkboxPlugin() { 
+export function checkboxPlugin() {
+    const handleCheckboxClick = (view, event) => {
+        if (event.target.classList.contains('checklist-checkbox')) {
+            const position = event.target.position;
+            view.dispatch(
+                view.state.tr.setNodeAttribute(
+                    position, 'checked', !event.target.checked)
+            )
+            return true;
+        }
+    }
     return new Plugin({
         state: {
             init(_, { doc }) { return checkboxDeco(doc) },
             apply(tr, old) { return tr.docChanged ? checkboxDeco(tr.doc) : old }
         },
         props: {
-            decorations(state) { return this.getState(state) }
-        }
+            decorations(state) { return this.getState(state) },
+            handleClick(view, _, event) {
+                handleCheckboxClick(view, event);
+            },
+            handleDoubleClick(view, _, event) {
+                handleCheckboxClick(view, event);
+            },
+            handleTripleClick(view, _, event) {
+                handleCheckboxClick(view, event);
+            }
+        },
+
     })
 }

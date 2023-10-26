@@ -63,8 +63,33 @@ ul.tasklist li {
   margin: 0.3em 0;
 }
 
+ul.tasklist li p.checked {
+  text-decoration: line-through;
+  color: #777;
+}
+
 ul.tasklist p {
   margin: 0;
+}
+
+#new_note_content ul.tasklist .checklist-toggle {
+  visibility: hidden;
+}
+
+#new_note_content .expanded ul.tasklist .checklist-toggle {
+  visibility: visible;
+}
+
+#notes-list ul li p {
+  padding-left: 1.2em;
+  background-image: url('/icons/square.svg');
+  background-repeat: no-repeat;
+  background-size: 1em;
+  background-position-y: 0.1em;
+}
+
+#notes-list ul li p.checked {
+  background-image: url('/icons/square-check.svg');
 }
 
 /* New note form */
