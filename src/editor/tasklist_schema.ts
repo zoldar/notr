@@ -16,7 +16,8 @@ export const nodes = {
         content: "paragraph",
         parseDOM: [{tag: "li"}],
         toDOM() { return ["li", 0] },
-        defining: true
+        defining: true,
+        draggable: true
     } as NodeSpec,
 
     paragraph: {
