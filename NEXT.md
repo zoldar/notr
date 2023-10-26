@@ -9,6 +9,10 @@ List of stuff I want to implement next, before I forget it.
 - [x] notes in masonry layout
 - [ ] color-coding of notes
 - [ ] checklists
+  - [x] basic list item toggling
+  - [ ] reordering list items via dragging
+  - [ ] moving checked items to the bottom
+  - [ ] switching between standard content and checklist
 - [ ] support for links
 - [ ] notes text search
 - [ ] better styling
