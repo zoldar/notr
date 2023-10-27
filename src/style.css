@@ -72,11 +72,11 @@ ul.tasklist p {
   margin: 0;
 }
 
-#new_note_content ul.tasklist .checklist-toggle {
+#new_note_content ul.tasklist .checklist-toggle, #new_note_content ul.tasklist .checklist-drag-handle {
   visibility: hidden;
 }
 
-#new_note_content .expanded ul.tasklist .checklist-toggle {
+#new_note_content .expanded ul.tasklist .checklist-toggle, #new_note_content .expanded ul.tasklist .checklist-drag-handle {
   visibility: visible;
 }
 
@@ -90,6 +90,16 @@ ul.tasklist p {
 
 #notes-list ul li p.checked {
   background-image: url('/icons/square-check.svg');
+}
+
+.checklist-drag-handle {
+  width: 1.5em;
+  height: 1.4em;
+  background-color: #d1d1d1;
+  text-align: center;
+  padding-bottom: 0.3em;
+  cursor: grab;
+  margin-right: 0.2em;
 }
 
 /* New note form */
@@ -127,6 +137,7 @@ ul.tasklist p {
   border: 0px solid;
   outline: 0;
   vertical-align: -50%;
+  cursor: pointer; 
 }
 
 #note-add-form .ProseMirror[data-placeholder]:focus::before {
@@ -177,6 +188,7 @@ ul.tasklist p {
   border: 0px solid;
   outline: 0;
   vertical-align: -50%;
+  cursor: pointer; 
 }
 
 #notes-list .note .buttons .container button > img {

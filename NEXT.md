@@ -10,8 +10,7 @@ List of stuff I want to implement next, before I forget it.
 - [ ] color-coding of notes
 - [ ] checklists
   - [x] basic list item toggling
-  - [ ] reordering list items via dragging
-  - [ ] moving checked items to the bottom
+  - [x] reordering list items via dragging
   - [ ] switching between standard content and checklist
 - [ ] support for links
 - [ ] notes text search

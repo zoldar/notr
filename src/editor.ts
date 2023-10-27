@@ -9,6 +9,8 @@ import { DOMSerializer, Node, Slice } from "prosemirror-model";
 import { taskSchema } from "./editor/tasklist_schema";
 import { buildKeymap } from "./editor/keymap";
 import { checkboxPlugin } from "./editor/checkbox";
+import { dropCursor } from "prosemirror-dropcursor";
+import { dragHandlePlugin } from "./editor/drag_handle";
 
 class BaseEditor {
     newStateFn: () => EditorState;
@@ -108,6 +110,8 @@ export class TaskEditor extends BaseEditor {
                     keymap(buildKeymap(taskSchema)),
                     keymap(baseKeymap),
                     checkboxPlugin(),
+                    dropCursor(),
+                    dragHandlePlugin(),
                     placeholder(placeholderLabel)
                 ]
             }, ...attrs

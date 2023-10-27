@@ -29,7 +29,7 @@ function checkboxDeco(doc) {
     const decos = []
 
     wrapItems(doc).forEach(item => {
-        decos.push(Decoration.widget(item.from, checkbox(item)))
+        decos.push(Decoration.widget(item.from, checkbox(item), {side: 1}))
     })
 
     return DecorationSet.create(doc, decos)
@@ -38,6 +38,7 @@ function checkboxDeco(doc) {
 export function checkboxPlugin() {
     const handleCheckboxClick = (view, event) => {
         if (event.target.classList.contains('checklist-checkbox')) {
+            event.preventDefault()
             const position = event.target.position;
             view.dispatch(
                 view.state.tr.setNodeAttribute(
