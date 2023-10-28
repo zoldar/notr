@@ -1,68 +1,79 @@
-import { Decoration, DecorationSet } from "prosemirror-view"
+import { Node } from "prosemirror-model"
+import { Decoration, DecorationSet, EditorView } from "prosemirror-view"
 import { NodeSelection, Plugin } from "prosemirror-state"
 
-function wrapItems(doc) {
-    const items = []
+interface Item {
+    position: number
+}
 
-    doc.descendants((node, pos) => {
+function wrapItems(doc: Node) {
+    const items: Array<Item> = []
+
+    doc.descendants((node: Node, pos: number) => {
         if (node.type.name === "paragraph") {
-            items.push({ from: pos })
+            items.push({ position: pos })
         }
     })
 
     return items
 }
 
-function button(checklistItem: object) {
-    checklistItem.parent
-    const button = document.createElement("div")
-    button.textContent = "||"
-    button.className = "checklist-drag-handle"
-    button.position = checklistItem.from
-    return button
+function handle(item: Item) {
+    const handle = document.createElement("div")
+    handle.textContent = "||"
+    handle.className = "checklist-drag-handle"
+    handle.dataset.position = item.position.toString(10)
+    return handle
 }
 
-function buttonDeco(doc) {
-    const decos = []
+function handleDeco(doc: Node) {
+    const decos: Array<Decoration> = []
 
     wrapItems(doc).forEach(item => {
-        decos.push(Decoration.widget(item.from, button(item)))
+        decos.push(Decoration.widget(item.position, handle(item)))
     })
 
     return DecorationSet.create(doc, decos)
 }
 
 export function dragHandlePlugin() {
-    const selectItem = (view, event) => {
-        const position = event.target.position
+    const selectItem = (view: EditorView, target: HTMLElement) => {
+        const position = Number(target.dataset.position)
         const paragraph = view.state.doc.resolve(position)
-        const parentPosition = view.state.doc.resolve(position).before(paragraph.depth)
+        const parentPosition = view.state.doc
+            .resolve(position)
+            .before(paragraph.depth)
         view.dispatch(
-            view.state.tr.setSelection(NodeSelection.create(view.state.doc, parentPosition))
+            view.state.tr
+                .setSelection(
+                    NodeSelection.create(view.state.doc, parentPosition))
         )
     }
+
     return new Plugin({
         state: {
-            init(_, { doc }) { return buttonDeco(doc) },
-            apply(tr, old) { return tr.docChanged ? buttonDeco(tr.doc) : old }
+            init(_, { doc }) { return handleDeco(doc) },
+            apply(tr, old) { return tr.docChanged ? handleDeco(tr.doc) : old }
         },
         props: {
             decorations(state) { return this.getState(state) },
             handleDOMEvents: {
                 mousedown: (view, event) => {
-                    if (event.button === 0 && event.target?.classList.contains('checklist-drag-handle')) {
-                        selectItem(view, event)
+                    const target = event.target as (HTMLElement | null)
+                    if (event.button === 0 && target?.classList.contains('checklist-drag-handle')) {
+                        selectItem(view, target)
                     }
-                    return false;
+                    return false
                 },
                 touchstart: (view, event) => {
-                    selectItem(view, event)
+                    const target = event.target as (HTMLElement | null)
+                    if (target?.classList.contains('checklist-drag-handle')) {
+                        selectItem(view, target)
+                    }
 
-                    return false;
+                    return false
                 }
             }
         }
     })
 }
-
-

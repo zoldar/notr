@@ -1,50 +1,57 @@
-import { Decoration, DecorationSet } from "prosemirror-view"
+import { Node } from "prosemirror-model"
+import { Decoration, DecorationSet, EditorView } from "prosemirror-view"
 import { Plugin } from "prosemirror-state"
 
-function wrapItems(doc) {
-    const items = []
+interface Item {
+    position: number,
+    checked: boolean
+}
+
+function wrapItems(doc: Node) {
+    const items: Array<Item> = []
 
     doc.descendants((node, pos) => {
         if (node.type.name === "paragraph") {
-            items.push({ from: pos, checked: node.attrs.checked })
+            items.push({ position: pos, checked: node.attrs.checked })
         }
     })
 
     return items
 }
 
-function checkbox(checklistItem: object) {
+function checkbox(item: Item) {
     const wrap = document.createElement("div")
     wrap.setAttribute("aria-hidden", "true")
     wrap.className = "checklist-toggle"
     const box = wrap.appendChild(document.createElement("input"))
     box.type = "checkbox"
-    box.checked = checklistItem.checked
+    box.checked = item.checked
     box.className = "checklist-checkbox"
-    box.position = checklistItem.from
+    box.dataset.position = item.position.toString(10)
     return wrap
 }
 
-function checkboxDeco(doc) {
-    const decos = []
+function checkboxDeco(doc: Node) {
+    const decos: Array<Decoration> = []
 
     wrapItems(doc).forEach(item => {
-        decos.push(Decoration.widget(item.from, checkbox(item), {side: 1}))
+        decos.push(Decoration.widget(item.position, checkbox(item), { side: 1 }))
     })
 
     return DecorationSet.create(doc, decos)
 }
 
 export function checkboxPlugin() {
-    const handleCheckboxClick = (view, event) => {
-        if (event.target.classList.contains('checklist-checkbox')) {
+    const handleCheckboxClick = (view: EditorView, event: MouseEvent) => {
+        const target = event.target as (HTMLInputElement | null)
+        if (target?.classList.contains('checklist-checkbox')) {
             event.preventDefault()
-            const position = event.target.position;
+            const position = Number(target.dataset.position);
             view.dispatch(
                 view.state.tr.setNodeAttribute(
-                    position, 'checked', !event.target.checked)
+                    position, 'checked', !target.checked)
             )
-            return true;
+            return true
         }
     }
     return new Plugin({
@@ -55,13 +62,13 @@ export function checkboxPlugin() {
         props: {
             decorations(state) { return this.getState(state) },
             handleClick(view, _, event) {
-                handleCheckboxClick(view, event);
+                handleCheckboxClick(view, event)
             },
             handleDoubleClick(view, _, event) {
-                handleCheckboxClick(view, event);
+                handleCheckboxClick(view, event)
             },
             handleTripleClick(view, _, event) {
-                handleCheckboxClick(view, event);
+                handleCheckboxClick(view, event)
             }
         },
 
