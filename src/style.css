@@ -98,7 +98,7 @@ ul.tasklist p {
   background-color: #d1d1d1;
   text-align: center;
   padding-bottom: 0.3em;
-  cursor: grab;
+  cursor: move;
   margin-right: 0.2em;
 }
 
