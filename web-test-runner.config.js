@@ -1,4 +1,4 @@
-import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
+import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin'
 
 export default {
 	files: 'src/**/*.test.ts',
@@ -11,4 +11,4 @@ export default {
             timeout: '2000',
         }
     },
-};
+}
