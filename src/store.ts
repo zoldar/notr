@@ -31,7 +31,7 @@ export class NotrStore extends EventTarget {
   get = (id: string) => this.notes.find((note) => note.id === id)
   getEditedNoteId = (): string => this.editedNoteId
 
-  add(note: Note) {
+  add(note: {title: object, content: object}) {
     this.notes.unshift({
       id: "id_" + Date.now(),
       title: note.title,

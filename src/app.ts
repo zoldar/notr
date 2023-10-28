@@ -8,7 +8,8 @@ import { setupMasonry } from './masonry.ts'
 const Notes = new NotrStore("notr-app")
 
 interface DOMElements {
-  [index: string]: HTMLElement | HTMLInputElement | HTMLTextAreaElement | HTMLDialogElement
+  editDialog: HTMLDialogElement,
+  [index: string]: HTMLElement
 }
 
 class NotrApp {
@@ -29,7 +30,7 @@ class NotrApp {
       addFormContent: el.querySelector('[data-notr="note-add-form-content"]') as HTMLElement,
       addFormButtons: el.querySelector('[data-notr="note-add-form-buttons"]') as HTMLElement,
       editDialog: el.querySelector('[data-notr="note-edit-dialog"]') as HTMLDialogElement,
-      editForm: el.querySelector('[data-notr="note-edit-form"]') as HTMLDialogElement,
+      editForm: el.querySelector('[data-notr="note-edit-form"]') as HTMLElement,
       editFormTitle: el.querySelector('[data-notr="note-edit-form-title"]') as HTMLElement,
       editFormContent: el.querySelector('[data-notr="note-edit-form-content"]') as HTMLElement,
       editFormDestroy: el.querySelector('[data-notr="note-edit-form-destroy"]') as HTMLElement,
@@ -60,14 +61,14 @@ class NotrApp {
     })
 
     this.$.editForm.addEventListener("submit", (event) => {
-      (this.$.editDialog as HTMLDialogElement).close()
+      this.$.editDialog.close()
       this.saveNote()
       event.preventDefault()
     })
 
     this.$.editDialog.addEventListener("click", (event) => {
       if (event.target === this.$.editDialog) {
-        (this.$.editDialog as HTMLDialogElement).close()
+        this.$.editDialog.close()
         this.saveNote()
       }
     })
@@ -81,14 +82,14 @@ class NotrApp {
       if (note) {
         Notes.remove(note)
       }
-      (this.$.editDialog as HTMLDialogElement).close()
+      this.$.editDialog.close()
       Notes.saveStorage()
     })
 
     document.body.addEventListener("keyup", (event) => {
       if (event.key === "Escape") {
         if (Notes.getEditedNoteId() !== "none") {
-          (this.$.editDialog as HTMLDialogElement).close()
+          this.$.editDialog.close()
           this.saveNote()
         } else {
           this.addNote()
@@ -117,7 +118,7 @@ class NotrApp {
       Notes.add({
         title: this.newTitleEditor.getDoc(),
         content: this.newContentEditor.getDoc()
-      } as Note)
+      })
       Notes.saveStorage()
     }
     this.newTitleEditor.reset()
@@ -147,10 +148,10 @@ class NotrApp {
     selector: string,
     handler: (n: Note, el: HTMLElement, e: Event) => void): void {
 
-    delegate(this.$.list as HTMLElement, selector, event, (e: Event) => {
-      const $el = (e.target as HTMLElement).closest("[data-id]") as HTMLElement
+    delegate(this.$.list, selector, event, (e: Event) => {
+      const $el = (e.target as HTMLElement).closest("[data-id]") as (HTMLElement | null)
 
-      if ($el.dataset.id) {
+      if ($el?.dataset.id) {
         const note = Notes.get($el.dataset.id)
         if (note) {
           handler(note, $el, e)
@@ -160,12 +161,12 @@ class NotrApp {
   }
 
   bindNoteEvents() {
-    this.noteEvent("click", '[data-notr="note-destroy"]', (note: Note) => {
+    this.noteEvent("click", '[data-notr="note-destroy"]', (note) => {
       Notes.remove(note)
       Notes.saveStorage()
     })
 
-    this.noteEvent("click", '[data-notr="note"]', (note: Note) => {
+    this.noteEvent("click", '[data-notr="note"]', (note) => {
       if (document.getSelection()?.type !== "Range") {
         Notes.setEditedNoteId(note.id)
         Notes.saveStorage()
@@ -200,8 +201,7 @@ class NotrApp {
     this.editTitleEditor.set(note.title)
     this.editContentEditor.set(note.content)
 
-    const dialog = (this.$.editDialog as HTMLDialogElement)
-    dialog.showModal()
+    this.$.editDialog.showModal()
   }
 
   render() {
@@ -217,8 +217,8 @@ class NotrApp {
     render(
       repeat(
         notes,
-        (note: Note) => note.id,
-        (note: Note) => this.createNoteItem(note)
+        note => note.id,
+        note => this.createNoteItem(note)
       ),
       this.$.list
     )

@@ -2,6 +2,8 @@ import { Node } from "prosemirror-model"
 import { Decoration, DecorationSet, EditorView } from "prosemirror-view"
 import { NodeSelection, Plugin } from "prosemirror-state"
 
+const HANDLE_CLASS = "checklist-drag-handle"
+
 interface Item {
   position: number
 }
@@ -21,7 +23,7 @@ function wrapItems(doc: Node) {
 function handle(item: Item) {
   const handle = document.createElement("div")
   handle.textContent = "||"
-  handle.className = "checklist-drag-handle"
+  handle.className = HANDLE_CLASS
   handle.dataset.position = item.position.toString(10)
   return handle
 }
@@ -60,14 +62,14 @@ export function dragHandlePlugin() {
       handleDOMEvents: {
         mousedown: (view, event) => {
           const target = event.target as (HTMLElement | null)
-          if (event.button === 0 && target?.classList.contains('checklist-drag-handle')) {
+          if (event.button === 0 && target?.classList.contains(HANDLE_CLASS)) {
             selectItem(view, target)
           }
           return false
         },
         touchstart: (view, event) => {
           const target = event.target as (HTMLElement | null)
-          if (target?.classList.contains('checklist-drag-handle')) {
+          if (target?.classList.contains(HANDLE_CLASS)) {
             selectItem(view, target)
           }
 

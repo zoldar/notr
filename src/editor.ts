@@ -5,7 +5,7 @@ import { EditorState } from "prosemirror-state"
 import { EditorView } from "prosemirror-view"
 import placeholder from "./editor/placeholder"
 import { baseKeymap } from "prosemirror-commands"
-import { DOMSerializer, Node, Slice } from "prosemirror-model"
+import { DOMSerializer, Node, Schema, Slice } from "prosemirror-model"
 import { taskSchema } from "./editor/tasklist_schema"
 import { buildKeymap } from "./editor/keymap"
 import { checkboxPlugin } from "./editor/checkbox"
@@ -113,17 +113,15 @@ export class TaskEditor extends BaseEditor {
 }
 
 export function renderTextDoc(input: object) {
-  const doc = Node.fromJSON(schema, input)
-  const Serializer = DOMSerializer.fromSchema(schema)
-  const outputHtml = Serializer.serializeFragment(doc.content)
-  const tmp = document.createElement('div')
-  tmp.appendChild(outputHtml)
-
-  return tmp
+  return renderDoc(input, schema)
 }
 
 export function renderTaskDoc(input: object) {
-  const doc = Node.fromJSON(taskSchema, input)
+  return renderDoc(input, taskSchema)
+}
+
+function renderDoc(input: object, schema: Schema) {
+  const doc = Node.fromJSON(schema, input)
   const Serializer = DOMSerializer.fromSchema(taskSchema)
   const outputHtml = Serializer.serializeFragment(doc.content)
   const tmp = document.createElement('div')
