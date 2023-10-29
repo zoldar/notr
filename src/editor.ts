@@ -134,6 +134,27 @@ export class ContentEditor extends BaseEditor {
     this.currentSchema = (docObj.schema === 'schema') ? schema : taskSchema
     super.set(docObj)
   }
+
+  currentMode() {
+    return (this.currentSchema === schema) ? 'text' : 'checklist'
+  }
+
+  toggleMode() {
+    if (this.currentSchema === schema) {
+      this.currentSchema = taskSchema
+    } else {
+      this.currentSchema = schema
+    }
+
+    const newDoc = convertDoc(this.view.state.doc, this.currentSchema)
+
+    const state = this.view.state
+    const tr = state.tr
+    tr.replace(0, state.doc.content.size, new Slice(newDoc.content, 0, 0))
+    const newState = state.apply(tr)
+    this.view.updateState(newState)
+    this.reset()
+  }
 }
 
 export function renderDoc(input: SerializedDoc) {
@@ -145,4 +166,9 @@ export function renderDoc(input: SerializedDoc) {
   tmp.appendChild(outputHtml)
 
   return tmp
+}
+
+function convertDoc(doc: Node, schema: Schema) {
+  console.log(schema)
+  return doc.copy()
 }

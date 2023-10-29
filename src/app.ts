@@ -227,4 +227,4 @@ class NotrApp {
   }
 }
 
-new NotrApp(document.body)
+window.app = new NotrApp(document.body)
