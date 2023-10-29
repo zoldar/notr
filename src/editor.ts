@@ -5,7 +5,7 @@ import { EditorState } from "prosemirror-state"
 import { EditorView } from "prosemirror-view"
 import placeholder from "./editor/placeholder"
 import { baseKeymap } from "prosemirror-commands"
-import { DOMSerializer, Node, Slice } from "prosemirror-model"
+import { DOMSerializer, Node, Schema, Slice } from "prosemirror-model"
 import { taskSchema } from "./editor/tasklist_schema"
 import { buildKeymap } from "./editor/keymap"
 import { checkboxPlugin } from "./editor/checkbox"
@@ -53,7 +53,6 @@ class BaseEditor {
   }
 
   isEmpty() {
-    console.log(typeof this.view.state.schema)
     return this.view.state.doc.textContent.trim() === ""
   }
 
@@ -89,7 +88,17 @@ export class SimpleEditor extends BaseEditor {
 }
 
 export class ContentEditor extends BaseEditor {
+  currentSchema: Schema = schema
+
   initState(attrs: object, placeholderLabel: string): EditorState {
+    if (this.currentSchema === taskSchema) {
+      return this.initTaskState(attrs, placeholderLabel)
+    } else {
+      return this.initTextState(attrs, placeholderLabel)
+    }
+  }
+
+  initTextState(attrs: object, placeholderLabel: string): EditorState {
     return super.initState({
       ...attrs, ...{
         plugins: [
@@ -102,10 +111,8 @@ export class ContentEditor extends BaseEditor {
       }
     }, placeholderLabel)
   }
-}
 
-export class TaskEditor extends BaseEditor {
-  initState(attrs: object, placeholderLabel: string) {
+  initTaskState(attrs: object, placeholderLabel: string) {
     return EditorState.create({
       ...{
         schema: taskSchema,
@@ -122,12 +129,17 @@ export class TaskEditor extends BaseEditor {
       }, ...attrs
     })
   }
+
+  set(docObj: SerializedDoc) {
+    this.currentSchema = (docObj.schema === 'schema') ? schema : taskSchema
+    super.set(docObj)
+  }
 }
 
 export function renderDoc(input: SerializedDoc) {
   const objSchema = (input.schema === 'schema') ? schema : taskSchema
   const doc = Node.fromJSON(objSchema, input.doc)
-  const Serializer = DOMSerializer.fromSchema(taskSchema)
+  const Serializer = DOMSerializer.fromSchema(objSchema)
   const outputHtml = Serializer.serializeFragment(doc.content)
   const tmp = document.createElement('div')
   tmp.appendChild(outputHtml)

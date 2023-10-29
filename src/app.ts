@@ -2,7 +2,7 @@ import { html, render } from 'lit'
 import { repeat } from 'lit/directives/repeat.js'
 import { NotrStore, Note } from './store.ts'
 import { delegate } from './helpers.ts'
-import { ContentEditor, SimpleEditor, TaskEditor, renderDoc } from './editor.ts'
+import { ContentEditor, SimpleEditor, renderDoc } from './editor.ts'
 import { setupMasonry } from './masonry.ts'
 
 const Notes = new NotrStore("notr-app")
@@ -38,7 +38,7 @@ class NotrApp {
     }
 
     this.newTitleEditor = new SimpleEditor(this.$.addFormTitle, "Title")
-    this.newContentEditor = new TaskEditor(this.$.addFormContent, "Write a note...", {
+    this.newContentEditor = new ContentEditor(this.$.addFormContent, "Write a note...", {
       handleDOMEvents: {
         focus: () => {
           this.expandAddForm()
@@ -47,7 +47,7 @@ class NotrApp {
       }
     })
     this.editTitleEditor = new SimpleEditor(this.$.editFormTitle, "Title")
-    this.editContentEditor = new TaskEditor(this.$.editFormContent, "Write a note...")
+    this.editContentEditor = new ContentEditor(this.$.editFormContent, "Write a note...")
     this.reflowNotes = setupMasonry(this.$.list, "note")
     this.setupUI()
   }
