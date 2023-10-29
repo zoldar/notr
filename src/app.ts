@@ -2,7 +2,7 @@ import { html, render } from 'lit'
 import { repeat } from 'lit/directives/repeat.js'
 import { NotrStore, Note } from './store.ts'
 import { delegate } from './helpers.ts'
-import { ContentEditor, SimpleEditor, TaskEditor, renderTaskDoc, renderTextDoc } from './editor.ts'
+import { ContentEditor, SimpleEditor, TaskEditor, renderDoc } from './editor.ts'
 import { setupMasonry } from './masonry.ts'
 
 const Notes = new NotrStore("notr-app")
@@ -179,9 +179,9 @@ class NotrApp {
     return html`
             <article class="note" data-notr="note" data-id="${note.id}">
                 <div class="container">
-                    <h3 data-notr="note-label">${renderTextDoc(note.title)}</h3>
+                    <h3 data-notr="note-label">${renderDoc(note.title)}</h3>
                     
-                    <div data-notr="note-content" class="content">${renderTaskDoc(note.content)}</div>
+                    <div data-notr="note-content" class="content">${renderDoc(note.content)}</div>
 
                     <footer class="buttons">
                         <ul class="container">

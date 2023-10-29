@@ -5,12 +5,17 @@ import { EditorState } from "prosemirror-state"
 import { EditorView } from "prosemirror-view"
 import placeholder from "./editor/placeholder"
 import { baseKeymap } from "prosemirror-commands"
-import { DOMSerializer, Node, Schema, Slice } from "prosemirror-model"
+import { DOMSerializer, Node, Slice } from "prosemirror-model"
 import { taskSchema } from "./editor/tasklist_schema"
 import { buildKeymap } from "./editor/keymap"
 import { checkboxPlugin } from "./editor/checkbox"
 import { dropCursor } from "prosemirror-dropcursor"
 import { dragHandlePlugin } from "./editor/drag_handle"
+
+export interface SerializedDoc {
+  schema: string,
+  doc: object
+}
 
 class BaseEditor {
   newStateFn: () => EditorState
@@ -48,10 +53,16 @@ class BaseEditor {
   }
 
   isEmpty() {
+    console.log(typeof this.view.state.schema)
     return this.view.state.doc.textContent.trim() === ""
   }
 
-  getDoc = (): object => this.view.state.doc.toJSON()
+  getDoc = (): SerializedDoc => {
+    return {
+      schema: (this.view.state.schema === schema) ? 'schema' : 'taskSchema',
+      doc: this.view.state.doc.toJSON()
+    }
+  }
 
   reset() {
     this.view.updateState(this.newStateFn())
@@ -62,10 +73,11 @@ class BaseEditor {
     window.getSelection()?.removeAllRanges()
   }
 
-  set(docObj: object) {
+  set(docObj: SerializedDoc) {
     this.reset()
+    const objSchema = (docObj.schema === 'schema') ? schema : taskSchema
     const state = this.view.state
-    const doc = state.schema.nodeFromJSON(docObj)
+    const doc = objSchema.nodeFromJSON(docObj.doc)
     const tr = state.tr
     tr.replace(0, state.doc.content.size, new Slice(doc.content, 0, 0))
     const newState = state.apply(tr)
@@ -112,16 +124,9 @@ export class TaskEditor extends BaseEditor {
   }
 }
 
-export function renderTextDoc(input: object) {
-  return renderDoc(input, schema)
-}
-
-export function renderTaskDoc(input: object) {
-  return renderDoc(input, taskSchema)
-}
-
-function renderDoc(input: object, schema: Schema) {
-  const doc = Node.fromJSON(schema, input)
+export function renderDoc(input: SerializedDoc) {
+  const objSchema = (input.schema === 'schema') ? schema : taskSchema
+  const doc = Node.fromJSON(objSchema, input.doc)
   const Serializer = DOMSerializer.fromSchema(taskSchema)
   const outputHtml = Serializer.serializeFragment(doc.content)
   const tmp = document.createElement('div')

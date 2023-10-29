@@ -1,8 +1,10 @@
+import { SerializedDoc } from "./editor"
+
 export interface Note {
   id: string
   created: Date
-  title: object
-  content: object
+  title: SerializedDoc
+  content: SerializedDoc
 }
 
 export class NotrStore extends EventTarget {
@@ -31,7 +33,7 @@ export class NotrStore extends EventTarget {
   get = (id: string) => this.notes.find((note) => note.id === id)
   getEditedNoteId = (): string => this.editedNoteId
 
-  add(note: {title: object, content: object}) {
+  add(note: { title: SerializedDoc, content: SerializedDoc }) {
     this.notes.unshift({
       id: "id_" + Date.now(),
       title: note.title,
