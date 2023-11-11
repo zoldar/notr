@@ -7,10 +7,10 @@ List of stuff I want to implement next, before I forget it.
 - [x] add expand/contract behavior of the add form
 - [x] support for linebreaks in rendered content
 - [x] notes in masonry layout
-- [ ] checklists
+- [x] checklists
   - [x] basic list item toggling
   - [x] reordering list items via dragging
-  - [ ] switching between standard content and checklist
+  - [x] switching between standard content and checklist
 - [ ] reminders with calendar integration / own notifications (faaaaar)
 - [ ] notes text search
 - [ ] cross client storage sync (requires some backend work, likely, faaar faaar away, but only at that point I might be able to migrate)
