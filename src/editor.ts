@@ -148,12 +148,13 @@ export class ContentEditor extends BaseEditor {
 
     const newDoc = convertDoc(this.view.state.doc, this.currentSchema)
 
+    this.reset()
+
     const state = this.view.state
     const tr = state.tr
     tr.replace(0, state.doc.content.size, new Slice(newDoc.content, 0, 0))
     const newState = state.apply(tr)
     this.view.updateState(newState)
-    this.reset()
   }
 }
 
@@ -169,6 +170,38 @@ export function renderDoc(input: SerializedDoc) {
 }
 
 function convertDoc(doc: Node, schema: Schema) {
-  console.log(schema)
-  return doc.copy()
+  if (schema === taskSchema) {
+    return convertTextToTaskList(doc)
+  } else {
+    return convertTaskListToText(doc)
+  }
+}
+
+function convertTaskListToText(doc: Node) {
+  const paragraphs: Array<Node> = []
+
+  doc.descendants((node) => {
+    if (node.type.name === "paragraph") {
+      paragraphs.push(schema.node("paragraph", null,
+        schema.text(node.content.textBetween(0, node.content.size))))
+    }
+  })
+
+  return schema.node("doc", null, paragraphs)
+}
+
+function convertTextToTaskList(doc: Node) {
+  const items: Array<Node> = []
+
+  doc.descendants((node) => {
+    if (node.isBlock) {
+      items.push(
+        taskSchema.node("list_item", null,
+          [taskSchema.node("paragraph", { checked: false },
+            taskSchema.text(node.content.textBetween(0, node.content.size)))])
+      )
+    }
+  })
+
+  return taskSchema.node("doc", null, taskSchema.node("bullet_list", null, items))
 }
