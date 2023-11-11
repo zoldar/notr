@@ -122,24 +122,6 @@ ul.tasklist p {
   display: none;
 }
 
-#note-add-form .buttons > .container {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  list-style-type: none; 
-  padding: 0;
-}
-
-#note-add-form .buttons .container button {
-  background-color: transparent;
-  color: blue;
-  border: 0px solid;
-  outline: 0;
-  vertical-align: -50%;
-  cursor: pointer; 
-}
-
 #note-add-form .ProseMirror[data-placeholder]:focus::before {
   content: '';
 }
@@ -214,7 +196,7 @@ ul.tasklist p {
   padding: 0.5em 0.8em;
 }
 
-#note-edit-form .buttons > .container {
+#note-add-form .buttons > .container, #note-edit-form .buttons > .container {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -223,7 +205,7 @@ ul.tasklist p {
   padding: 0;
 }
 
-#note-edit-form .buttons .container button {
+#note-add-form .buttons .container button, #note-edit-form .buttons .container button {
   background-color: transparent;
   color: blue;
   border: 0px solid;

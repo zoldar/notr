@@ -29,11 +29,13 @@ class NotrApp {
       addFormTitle: el.querySelector('[data-notr="note-add-form-title"]') as HTMLElement,
       addFormContent: el.querySelector('[data-notr="note-add-form-content"]') as HTMLElement,
       addFormButtons: el.querySelector('[data-notr="note-add-form-buttons"]') as HTMLElement,
+      addFormToggle: el.querySelector('[data-notr="note-add-form-toggle"]') as HTMLElement,
       editDialog: el.querySelector('[data-notr="note-edit-dialog"]') as HTMLDialogElement,
       editForm: el.querySelector('[data-notr="note-edit-form"]') as HTMLElement,
       editFormTitle: el.querySelector('[data-notr="note-edit-form-title"]') as HTMLElement,
       editFormContent: el.querySelector('[data-notr="note-edit-form-content"]') as HTMLElement,
       editFormDestroy: el.querySelector('[data-notr="note-edit-form-destroy"]') as HTMLElement,
+      editFormToggle: el.querySelector('[data-notr="note-edit-form-toggle"]') as HTMLElement,
       list: el.querySelector('[data-notr="list"]') as HTMLElement,
     }
 
@@ -84,6 +86,14 @@ class NotrApp {
       }
       this.$.editDialog.close()
       Notes.saveStorage()
+    })
+
+    this.$.addFormToggle.addEventListener("click", () => {
+      this.newContentEditor.toggleMode()
+    })
+
+    this.$.editFormToggle.addEventListener("click", () => {
+      this.editContentEditor.toggleMode()
     })
 
     document.body.addEventListener("keyup", (event) => {
