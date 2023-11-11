@@ -237,4 +237,4 @@ class NotrApp {
   }
 }
 
-window.app = new NotrApp(document.body)
+(window as Window & typeof globalThis & {app: object}).app = new NotrApp(document.body)
