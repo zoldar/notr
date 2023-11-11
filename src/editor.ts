@@ -183,7 +183,7 @@ function convertTaskListToText(doc: Node) {
   doc.descendants((node) => {
     if (node.type.name === "paragraph") {
       paragraphs.push(schema.node("paragraph", null,
-        schema.text(node.content.textBetween(0, node.content.size))))
+        schema.text(node.content.textBetween(0, node.content.size) || " ")))
     }
   })
 
@@ -198,7 +198,7 @@ function convertTextToTaskList(doc: Node) {
       items.push(
         taskSchema.node("list_item", null,
           [taskSchema.node("paragraph", { checked: false },
-            taskSchema.text(node.content.textBetween(0, node.content.size)))])
+            taskSchema.text(node.content.textBetween(0, node.content.size) || " "))])
       )
     }
   })
