@@ -48,6 +48,60 @@ main section {
   margin: 0 0.5em;
 }
 
+/* Task list */
+
+ul.tasklist {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul.tasklist li {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: top;
+  margin: 0.3em 0;
+}
+
+ul.tasklist li p.checked {
+  text-decoration: line-through;
+  color: #777;
+}
+
+ul.tasklist p {
+  margin: 0;
+}
+
+#new_note_content ul.tasklist .checklist-toggle, #new_note_content ul.tasklist .checklist-drag-handle {
+  visibility: hidden;
+}
+
+#new_note_content .expanded ul.tasklist .checklist-toggle, #new_note_content .expanded ul.tasklist .checklist-drag-handle {
+  visibility: visible;
+}
+
+#notes-list ul li p {
+  padding-left: 1.2em;
+  background-image: url('/icons/square.svg');
+  background-repeat: no-repeat;
+  background-size: 1em;
+  background-position-y: 0.1em;
+}
+
+#notes-list ul li p.checked {
+  background-image: url('/icons/square-check.svg');
+}
+
+.checklist-drag-handle {
+  width: 1.5em;
+  height: 1.4em;
+  background-color: #d1d1d1;
+  text-align: center;
+  padding-bottom: 0.3em;
+  cursor: move;
+  margin-right: 0.2em;
+}
+
 /* New note form */
 
 #note-add-form {
@@ -68,21 +122,8 @@ main section {
   display: none;
 }
 
-#note-add-form .buttons > .container {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  list-style-type: none; 
-  padding: 0;
-}
-
-#note-add-form .buttons .container button {
-  background-color: transparent;
-  color: blue;
-  border: 0px solid;
-  outline: 0;
-  vertical-align: -50%;
+#note-add-form .ProseMirror[data-placeholder]:focus::before {
+  content: '';
 }
 
 /* Notes list */
@@ -129,13 +170,14 @@ main section {
   border: 0px solid;
   outline: 0;
   vertical-align: -50%;
+  cursor: pointer; 
 }
 
-#notes-list .note .buttons .container button > svg {
+#notes-list .note .buttons .container button > img {
   opacity: 0
 }
 
-#notes-list .note:hover .buttons .container button > svg {
+#notes-list .note:hover .buttons .container button > img {
   opacity: 1;
 }
 
@@ -154,7 +196,7 @@ main section {
   padding: 0.5em 0.8em;
 }
 
-#note-edit-form .buttons > .container {
+#note-add-form .buttons > .container, #note-edit-form .buttons > .container {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -163,7 +205,7 @@ main section {
   padding: 0;
 }
 
-#note-edit-form .buttons .container button {
+#note-add-form .buttons .container button, #note-edit-form .buttons .container button {
   background-color: transparent;
   color: blue;
   border: 0px solid;

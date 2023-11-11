@@ -7,16 +7,19 @@ List of stuff I want to implement next, before I forget it.
 - [x] add expand/contract behavior of the add form
 - [x] support for linebreaks in rendered content
 - [x] notes in masonry layout
-- [ ] color-coding of notes
 - [ ] checklists
-- [ ] support for links
+  - [x] basic list item toggling
+  - [x] reordering list items via dragging
+  - [ ] switching between standard content and checklist
+- [ ] reminders with calendar integration / own notifications (faaaaar)
 - [ ] notes text search
-- [ ] better styling
+- [ ] cross client storage sync (requires some backend work, likely, faaar faaar away, but only at that point I might be able to migrate)
+- [ ] color-coding of notes
+- [ ] support for links
 - [ ] dragging notes
+- [ ] better styling
+- [ ] support for embed rendering of links
 - [ ] image embeds, maybe
 - [ ] PWA-readiness
 - [x] Tauri based native client
-- [ ] support for embed rendering of links
-- [ ] reminders with calendar integration / own notifications (faaaaar)
-- [ ] cross client storage sync (requires some backend work, likely, faaar faaar away, but only at that point I might be able to migrate)
 - [ ] sharing individual notes
