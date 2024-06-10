@@ -50,6 +50,7 @@ export function dragHandlePlugin() {
         .setSelection(
           NodeSelection.create(view.state.doc, parentPosition))
     )
+    view.focus()
   }
 
   return new Plugin({
