@@ -24,6 +24,7 @@ function handle(item: Item) {
   const handle = document.createElement("div")
   handle.textContent = "||"
   handle.className = HANDLE_CLASS
+  handle.contentEditable = false
   handle.dataset.position = item.position.toString(10)
   return handle
 }
