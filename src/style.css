@@ -24,6 +24,12 @@ body {
   font-family: sans-serif;
 }
 
+body.modal-open {
+  overflow-y: hidden;
+  height: 100vh;
+  padding-right: 15px;
+}
+
 /* Inherit fonts for inputs and buttons */
 input,
 button,

@@ -63,14 +63,14 @@ class NotrApp {
     })
 
     this.$.editForm.addEventListener("submit", (event) => {
-      this.$.editDialog.close()
+      this.hideEditDialog()
       this.saveNote()
       event.preventDefault()
     })
 
     this.$.editDialog.addEventListener("click", (event) => {
       if (event.target === this.$.editDialog) {
-        this.$.editDialog.close()
+        this.hideEditDialog()
         this.saveNote()
       }
     })
@@ -84,7 +84,7 @@ class NotrApp {
       if (note) {
         Notes.remove(note)
       }
-      this.$.editDialog.close()
+      this.hideEditDialog()
       Notes.saveStorage()
     })
 
@@ -99,7 +99,7 @@ class NotrApp {
     document.body.addEventListener("keyup", (event) => {
       if (event.key === "Escape") {
         if (Notes.getEditedNoteId() !== "none") {
-          this.$.editDialog.close()
+          this.hideEditDialog()
           this.saveNote()
         } else {
           this.addNote()
@@ -190,7 +190,7 @@ class NotrApp {
             <article class="note" data-notr="note" data-id="${note.id}">
                 <div class="container">
                     <h3 data-notr="note-label">${renderDoc(note.title)}</h3>
-                    
+
                     <div data-notr="note-content" class="content">${renderDoc(note.content)}</div>
 
                     <footer class="buttons">
@@ -211,7 +211,17 @@ class NotrApp {
     this.editTitleEditor.set(note.title)
     this.editContentEditor.set(note.content)
 
+    this.showEditDialog()
+  }
+
+  showEditDialog() {
+    document.body.classList.add('modal-open')
     this.$.editDialog.showModal()
+  }
+
+  hideEditDialog() {
+    this.$.editDialog.close()
+    document.body.classList.remove('modal-open')
   }
 
   render() {
