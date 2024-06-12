@@ -76,6 +76,7 @@ ul.tasklist li p.checked {
 
 ul.tasklist p {
   margin: 0;
+  width: 100%;
 }
 
 #new_note_content ul.tasklist .checklist-toggle, #new_note_content ul.tasklist .checklist-drag-handle {

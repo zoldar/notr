@@ -46,11 +46,8 @@ export function dragHandlePlugin() {
     const parentPosition = view.state.doc
       .resolve(position)
       .before(paragraph.depth)
-    view.dispatch(
-      view.state.tr
-        .setSelection(
-          NodeSelection.create(view.state.doc, parentPosition))
-    )
+    const selection = NodeSelection.create(view.state.doc, parentPosition)
+    view.dispatch(view.state.tr.setSelection(selection))
     view.focus()
   }
 
